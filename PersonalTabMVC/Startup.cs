@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace PersonalTabMVC
 {
@@ -9,22 +10,20 @@ namespace PersonalTabMVC
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc(routes =>
-            {
-
-                routes.MapRoute("Default", "{controller=Home}/{action=Index}/{Id?}");
+            app.UseRouting();
+            app.UseEndpoints( endpoint => { 
+                
+                endpoint.MapControllerRoute("Default", "{controller=Home}/{action=Index}/{Id?}"); 
             });
-
             app.UseFileServer();
         }
     }
